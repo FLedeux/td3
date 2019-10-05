@@ -28,12 +28,23 @@ class MySQLRevueDAOTest {
 	@Test
 	void testupdate()
 	{
-		assertTrue(this.daos.getRevueDAO().update(new Revue(4,"test","ceci est un test",3,"test.jpg",3)));
+		assertTrue(this.daos.getRevueDAO().update(new Revue(3,"test","ceci est un test",3,"test.jpg",3)));
+	}
+	
+	@Test
+	void testupdate2()
+	{
+		assertFalse(this.daos.getRevueDAO().update(new Revue(0,"test","ceci est un test",3,"test.jpg",3)));
 	}
 	@Test
 	void testdelete()
 	{
-		assertTrue(this.daos.getRevueDAO().delete(new Revue(6,"","",0,"",0)));
+		assertTrue(this.daos.getRevueDAO().delete(new Revue(3,"","",0,"",0)));
+	}
+	@Test
+	void testdelete2()
+	{
+		assertFalse(this.daos.getRevueDAO().delete(new Revue(0,"","",0,"",0)));
 	}
 	@Test
 	void testGetById()
