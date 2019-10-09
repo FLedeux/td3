@@ -40,7 +40,7 @@ public class ListeMemoirePeriodiciteDAO implements PeriodiciteDAO{
 		
 		int idx = this.donnees.indexOf(new Periodicite(id, null));
 		if (idx == -1) {
-			throw new IllegalArgumentException("Aucun objet ne possÃ¨de cet identifiant");
+			throw new IllegalArgumentException("Aucun objet ne possède cet identifiant");
 		} else {
 			return this.donnees.get(idx);
 		}
@@ -92,18 +92,13 @@ public class ListeMemoirePeriodiciteDAO implements PeriodiciteDAO{
 	@Override
 	public Periodicite getByNom(Periodicite periodicite) {
 		int i=0;
-		boolean ok=false;
-		while((i<this.donnees.size()) || this.donnees.get(i).getNom()==periodicite.getNom()) {
+		try {
+		while(this.donnees.get(i).getNom()!=periodicite.getNom()) {
 			i++;
-			if (this.donnees.get(i).getNom()==periodicite.getNom()) {
-				ok=true;
-			}
 		}
-		if (ok==false) {
-			throw new IllegalArgumentException("Aucun objet ne possÃ¨de ce nom");
-		}
-		else {
 			return this.donnees.get(i);
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Aucun objet ne possède ce nom");
 		}
 	}
 

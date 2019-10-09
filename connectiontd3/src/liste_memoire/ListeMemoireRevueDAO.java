@@ -33,7 +33,7 @@ public class ListeMemoireRevueDAO implements RevueDAO{
 		
 		int idx = this.donnees.indexOf(new Revue(id, "","",0,"",0));
 		if (idx == -1) {
-			throw new IllegalArgumentException("Aucun objet ne possÃ¨de cet identifiant");
+			throw new IllegalArgumentException("Aucun objet ne possède cet identifiant");
 		} else {
 			return this.donnees.get(idx);
 		}
@@ -89,7 +89,7 @@ public class ListeMemoireRevueDAO implements RevueDAO{
 		}
 			return this.donnees.get(i);
 		}catch(Exception e) {
-			throw new IllegalArgumentException("Aucun objet ne possÃ¨de ce nom");
+			throw new IllegalArgumentException("Aucun objet ne possède ce nom");
 		}
 	}
 
