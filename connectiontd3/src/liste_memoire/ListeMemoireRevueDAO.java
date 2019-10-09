@@ -60,8 +60,8 @@ public class ListeMemoireRevueDAO implements RevueDAO{
 		} else {
 			
 			this.donnees.set(idx, object);
-			return true;
 		}
+		return true;
 		
 	}
 
@@ -74,8 +74,8 @@ public class ListeMemoireRevueDAO implements RevueDAO{
 			throw new IllegalArgumentException("Tentative de suppression d'un objet inexistant");
 		} else {
 			supprime = this.donnees.remove(idx);
-			return object.equals(supprime);
 		}
+		return object.equals(supprime);
 		
 	}
 
