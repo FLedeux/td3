@@ -77,28 +77,28 @@ public class Revue {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
-		result = prime * result + id_perio;
-		long temp;
-		temp = Double.doubleToLongBits(tarif_numero);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((titre == null) ? 0 : titre.hashCode());
-		result = prime * result + ((visuel == null) ? 0 : visuel.hashCode());
-		return result;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Revue other = (Revue) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if ((this == obj)||(this.getId()==((Revue)obj).getId())) {
-			return true;
-		}
-			return false;
-
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
 	}
+
+
 	
 	public static void saisir_action(DAOFactory factory) {
 		Scanner sc = new Scanner(System.in);

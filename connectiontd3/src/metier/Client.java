@@ -84,24 +84,22 @@ public class Client {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((code_postal == null) ? 0 : code_postal.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((no_rue == null) ? 0 : no_rue.hashCode());
-		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
-		result = prime * result + ((pays == null) ? 0 : pays.hashCode());
-		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
-		result = prime * result + ((ville == null) ? 0 : ville.hashCode());
-		result = prime * result + ((voie == null) ? 0 : voie.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if ((this == obj)||(this.getId()==((Client)obj).getId())) {
+		if (this == obj)
 			return true;
-		}
+		if (obj == null)
 			return false;
-		
+		if (getClass() != obj.getClass())
+			return false;
+		Client other = (Client) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 	
 	
