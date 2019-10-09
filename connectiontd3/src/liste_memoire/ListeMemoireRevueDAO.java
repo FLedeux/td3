@@ -83,21 +83,17 @@ public class ListeMemoireRevueDAO implements RevueDAO{
 	public Revue getByTitre(Revue revue) {
 		
 		int i=0;
-		boolean ok=false;
-		while((i<this.donnees.size()) || this.donnees.get(i).getTitre()==revue.getTitre()) {
+		try {
+		while(this.donnees.get(i).getTitre()!=revue.getTitre()) {
 			i++;
-			if (this.donnees.get(i).getTitre()==revue.getTitre()) {
-				ok=true;
-			}
 		}
-		if (ok==false) {
-			throw new IllegalArgumentException("Aucun objet ne possède ce nom");
-		}
-		else {
 			return this.donnees.get(i);
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Aucun objet ne possède ce nom");
 		}
 	}
 
+	
 	@Override
 	public ArrayList<Revue> GetByPerio(Revue revue) {
 		int i=0;
