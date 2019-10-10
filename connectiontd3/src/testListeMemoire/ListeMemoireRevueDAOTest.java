@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -14,13 +13,9 @@ import metier.Revue;
 class ListeMemoireRevueDAOTest {
 	
 	
-	private DAOFactory daos;
+	private DAOFactory daos = DAOFactory.getDAOFactory(Persistance.ListeMemoire) ;
 	private Revue test;
 
-	@BeforeEach
-	public void setUp() {
-		this.daos = DAOFactory.getDAOFactory(Persistance.ListeMemoire);	
-	}
 	
 	
 	@Test
@@ -110,7 +105,7 @@ class ListeMemoireRevueDAOTest {
 	{
 		test = new Revue(-1,"test","ceci est un test",3,"test.jpg",0);
 		try {
-		assertEquals(this.daos.getRevueDAO().getById(test.getId()),test);
+		this.daos.getRevueDAO().getById(test.getId());
 		fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
@@ -122,7 +117,7 @@ class ListeMemoireRevueDAOTest {
 	{
 		test = new Revue(0,"colibri","ceci est un test",3,"test.jpg",0);
 		try {
-		assertEquals(this.daos.getRevueDAO().getByTitre(test),test);
+		this.daos.getRevueDAO().getByTitre(test);
 		fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -14,14 +13,9 @@ import metier.Periodicite;
 
 class ListeMemoirePeriodiciteDAPTest {
 
-	private DAOFactory daos;
+	private DAOFactory daos =DAOFactory.getDAOFactory(Persistance.ListeMemoire);
 	private Periodicite test;
 
-	@BeforeEach
-	public void setUp() {
-		this.daos = DAOFactory.getDAOFactory(Persistance.ListeMemoire);	
-	}
-	
 	
 	@Test
 	void test_create()
@@ -75,7 +69,7 @@ class ListeMemoirePeriodiciteDAPTest {
 	{
 		test = new Periodicite(-1,"test");
 		try {
-			assertEquals(this.daos.getPeriodiciteDAO().getById(test.getId()),test);
+			this.daos.getPeriodiciteDAO().getById(test.getId());
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
@@ -88,7 +82,7 @@ class ListeMemoirePeriodiciteDAPTest {
 	{
 		test = new Periodicite(-1,"mandarine");
 		try {
-			assertEquals(this.daos.getPeriodiciteDAO().getByNom(test),test);
+			this.daos.getPeriodiciteDAO().getByNom(test);
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
@@ -101,7 +95,7 @@ class ListeMemoirePeriodiciteDAPTest {
 	{
 		test = new Periodicite(-1,"test");
 		try {
-			assertEquals(this.daos.getPeriodiciteDAO().update(test),test);
+			this.daos.getPeriodiciteDAO().update(test);
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
@@ -113,7 +107,7 @@ class ListeMemoirePeriodiciteDAPTest {
 	{
 		test = new Periodicite(-1,"test");
 		try {
-			assertEquals(this.daos.getPeriodiciteDAO().delete(test),test);
+			this.daos.getPeriodiciteDAO().delete(test);
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);

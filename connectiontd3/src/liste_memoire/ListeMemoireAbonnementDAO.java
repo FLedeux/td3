@@ -31,7 +31,10 @@ public class ListeMemoireAbonnementDAO implements AbonnementDAO{
 	@Override
 	public boolean create(Abonnement object) {
 
-        return this.donnees.add(object);
+       if(this.donnees.contains(object)) {
+    	   throw new IllegalArgumentException("un client ne peut pas etre abonné deux fois à la même revue");
+       }
+		return this.donnees.add(object);
 		
 	}
 
