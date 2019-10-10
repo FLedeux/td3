@@ -94,7 +94,7 @@ public class ListeMemoireAbonnementDAO implements AbonnementDAO{
 
 	@Override
 	public Abonnement GetByClientEtRevue(Abonnement abonnement) {
-		int idx = this.donnees.indexOf(new Abonnement(abonnement.getId_client(), abonnement.getId_revue(),"",""));
+		int idx = this.donnees.indexOf(abonnement);
 		if (idx == -1) {
 			throw new IllegalArgumentException("Aucun objet ne possède cet identifiant");
 		} else {

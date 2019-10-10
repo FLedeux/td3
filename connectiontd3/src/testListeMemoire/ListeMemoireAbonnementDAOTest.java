@@ -2,11 +2,14 @@ package testListeMemoire;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
 import factory.Persistance;
 import metier.Abonnement;
+import metier.Client;
 import metier.Revue;
 
 class ListeMemoireAbonnementDAOTest {
@@ -46,8 +49,43 @@ class ListeMemoireAbonnementDAOTest {
 		assertEquals(this.daos.getAbonnementDAO().GetByClientEtRevue(test),test);
 	}
 	
+	@Test
+	void test_GetByClient()
+	{
+		ArrayList<Abonnement> array= new ArrayList<Abonnement>();
+		test = new Abonnement(10,1,"02/03/2000","02/05/2000");
+		array.add(test);
+		this.daos.getAbonnementDAO().create(test);
+		assertEquals(daos.getAbonnementDAO().GetByIDClient(array.get(0)),array);
+	}
 	
-	
+	@Test
+	void test_GetByRevue()
+	{
+		ArrayList<Abonnement> array= new ArrayList<Abonnement>();
+		test = new Abonnement(3,10,"02/03/2000","02/05/2000");
+		array.add(test);
+		this.daos.getAbonnementDAO().create(test);
+		assertEquals(daos.getAbonnementDAO().GetByIDRevue(array.get(0)),array);
+	}
+	@Test
+	void test_GetBydate_debut()
+	{
+		ArrayList<Abonnement> array= new ArrayList<Abonnement>();
+		test = new Abonnement(4,1,"01/01/2019","02/01/2019");
+		array.add(test);
+		this.daos.getAbonnementDAO().create(test);
+		assertEquals(daos.getAbonnementDAO().GetByDateDebut(array.get(0)),array);
+	}
+	@Test
+	void test_GetBydate_fin()
+	{
+		ArrayList<Abonnement> array= new ArrayList<Abonnement>();
+		test = new Abonnement(5,1,"02/03/2000","02/05/2019");
+		array.add(test);
+		this.daos.getAbonnementDAO().create(test);
+		assertEquals(daos.getAbonnementDAO().GetByDateFin(array.get(0)),array);
+	}
 	
 	
 	
@@ -96,14 +134,13 @@ class ListeMemoireAbonnementDAOTest {
 	{
 		test = new Abonnement(2,2,"02/03/2000","02/05/2000");
 		this.daos.getAbonnementDAO().create(test);
-		test.setId_revue(-1);
 		try {
-			this.daos.getAbonnementDAO().GetByClientEtRevue(test);
+			this.daos.getAbonnementDAO().GetByClientEtRevue(new Abonnement(test.getId_client(),-1,test.getDate_debut(),test.getDate_fin()));
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
-		}
 
+		}
 	}
 	
 	
@@ -138,9 +175,8 @@ class ListeMemoireAbonnementDAOTest {
 	{
 		test = new Abonnement(2,3,"02/03/2000","02/05/2000");
 		this.daos.getAbonnementDAO().create(test);
-		test.setId_client(-1);
 		try {
-			this.daos.getAbonnementDAO().GetByClientEtRevue(test);
+			this.daos.getAbonnementDAO().GetByClientEtRevue(new Abonnement(-1,test.getId_revue(),test.getDate_debut(),test.getDate_fin()));
 			fail();
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
