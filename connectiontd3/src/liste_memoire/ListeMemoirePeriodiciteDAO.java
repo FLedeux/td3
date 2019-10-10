@@ -92,14 +92,13 @@ public class ListeMemoirePeriodiciteDAO implements PeriodiciteDAO{
 	@Override
 	public Periodicite getByNom(Periodicite periodicite) {
 		int i=0;
-		try {
-		while(this.donnees.get(i).getNom()!=periodicite.getNom()) {
+		while((this.donnees.get(i).getNom()!=periodicite.getNom())||(i<this.donnees.size())) {
 			i++;
 		}
+		if(this.donnees.get(i).getNom()==periodicite.getNom()) {
 			return this.donnees.get(i);
-		}catch(Exception e) {
-			throw new IllegalArgumentException("Aucun objet ne possède ce nom");
 		}
+		throw new IllegalArgumentException("Aucun objet ne possède ce nom");
 	}
 
 }
