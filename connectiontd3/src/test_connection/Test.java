@@ -2,7 +2,6 @@ package test_connection;
 
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import factory.DAOFactory;

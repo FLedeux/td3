@@ -71,10 +71,15 @@ public class MySQLRevueDAO implements RevueDAO{
 			
 			if (laConnexion != null)laConnexion.close();
 			
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+			
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 				}
 	}
 
@@ -85,13 +90,21 @@ public class MySQLRevueDAO implements RevueDAO{
 			PreparedStatement requete = laConnexion.prepareStatement("delete from Revue where id_revue=?");
 			requete.setInt(1, revue.getId());
 			int res = requete.executeUpdate();
+			
+			
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
+			
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+			
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 
 				}
 	}
@@ -108,11 +121,17 @@ public class MySQLRevueDAO implements RevueDAO{
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
+			
+			if(res.next()) {
 			return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
 			}
+			else {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+		}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
+				System.out.println("Pb select" + sqle.getMessage());
+				return null;
 				}
 	}
 	
@@ -126,10 +145,15 @@ public class MySQLRevueDAO implements RevueDAO{
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
-			return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
-			}
+			if(res.next()) {
+				return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
+				}
+				else {
+					throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				}			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return null;
 
 				}
 	}

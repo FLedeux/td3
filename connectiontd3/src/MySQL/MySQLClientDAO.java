@@ -33,8 +33,14 @@ private static MySQLClientDAO instance;
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
-			return new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays"));
+			if(res.next()){
+				return new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays"));
 			}
+			else {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+
+		}
 			catch (SQLException sqle) {
 				throw (new IllegalArgumentException(sqle.getMessage()));
 
@@ -92,12 +98,14 @@ private static MySQLClientDAO instance;
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
-			
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 				}
 	}
 
@@ -111,11 +119,14 @@ private static MySQLClientDAO instance;
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 			}
 	}
 

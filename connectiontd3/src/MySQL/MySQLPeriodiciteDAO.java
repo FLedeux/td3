@@ -32,10 +32,16 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
+			if(res.next()) {
 			return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
 			}
+			else {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+		}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return null;
 
 				}
 	}
@@ -76,12 +82,16 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+			
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
-			}
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;		
+				}
 			
 	}
 
@@ -97,11 +107,14 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			
 			if (laConnexion != null)laConnexion.close();
 			
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 			}
 	}
 
@@ -115,11 +128,15 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
-			return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
-			}
+			if(res.next()) {
+				return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
+				}
+				else {
+					throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				}			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
-
+				System.out.println("Pb select" + sqle.getMessage());
+				return null;
 				}
 	}
 

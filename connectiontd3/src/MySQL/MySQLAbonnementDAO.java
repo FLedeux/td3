@@ -64,11 +64,14 @@ private static MySQLAbonnementDAO instance;
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
-			
-			return res==1;
+			if(res<1) {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
+			return res==1;		
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return false;
 
 				}
 	}
@@ -85,10 +88,14 @@ private static MySQLAbonnementDAO instance;
 		if (requete != null)requete.close();
 		
 		if (laConnexion != null)laConnexion.close();
+		if(res<1) {
+			throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+		}
 		return res==1;
 		}
 		catch (SQLException sqle) {
-			throw (new IllegalArgumentException(sqle.getMessage()));
+			System.out.println("Pb select" + sqle.getMessage());
+			return false;
 
 		}
 	}
@@ -152,11 +159,16 @@ private static MySQLAbonnementDAO instance;
 			
 			if (requete != null)requete.close();
 			if (laConnexion != null)laConnexion.close();
+			if(res.next()) {
 			return new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate());
-			
+			}
+			else {
+				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			}
 			}
 			catch (SQLException sqle) {
-				throw (new IllegalArgumentException(sqle.getMessage()));
+				System.out.println("Pb select" + sqle.getMessage());
+				return null;
 
 				}
 		
