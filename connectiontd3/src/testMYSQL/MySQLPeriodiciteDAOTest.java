@@ -2,6 +2,7 @@ package testMYSQL;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -111,5 +112,9 @@ class MySQLPeriodiciteDAOTest {
 		}
 	}
 	
+	@AfterEach
+	public void after() {
+		daos.getPeriodiciteDAO().delete(test);
+	}
 
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -55,6 +56,9 @@ class MySQLAbonnementDAOTest {
 		array.add(test);
 		this.daos.getAbonnementDAO().create(test);
 		assertEquals(daos.getAbonnementDAO().GetByIDClient(array.get(0)),array);
+		for(int i=0;i<array.size();i++) {
+			daos.getAbonnementDAO().delete(array.get(i));
+		}
 	}
 	
 	@Test
@@ -65,6 +69,9 @@ class MySQLAbonnementDAOTest {
 		array.add(test);
 		this.daos.getAbonnementDAO().create(test);
 		assertEquals(daos.getAbonnementDAO().GetByIDRevue(array.get(0)),array);
+		for(int i=0;i<array.size();i++) {
+			daos.getAbonnementDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetBydate_debut()
@@ -74,6 +81,9 @@ class MySQLAbonnementDAOTest {
 		array.add(test);
 		this.daos.getAbonnementDAO().create(test);
 		assertEquals(daos.getAbonnementDAO().GetByDateDebut(array.get(0)),array);
+		for(int i=0;i<array.size();i++) {
+			daos.getAbonnementDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetBydate_fin()
@@ -83,6 +93,10 @@ class MySQLAbonnementDAOTest {
 		array.add(test);
 		this.daos.getAbonnementDAO().create(test);
 		assertEquals(daos.getAbonnementDAO().GetByDateFin(array.get(0)),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getAbonnementDAO().delete(array.get(i));
+		}
 	}
 	
 	
@@ -180,6 +194,11 @@ class MySQLAbonnementDAOTest {
 			assertTrue(true);
 		}
 
+	}
+	
+	@AfterEach
+	public void after() {
+		daos.getAbonnementDAO().delete(test);
 	}
 
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -58,6 +59,10 @@ class MySQLClientDAOTest {
 		array.add(test);
 		this.daos.getClientDAO().create(test);
 		assertEquals(daos.getClientDAO().GetByNomPrenom(test),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getClientDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetByAdresse()
@@ -67,6 +72,10 @@ class MySQLClientDAOTest {
 		array.add(test);
 		this.daos.getClientDAO().create(test);
 		assertEquals(daos.getClientDAO().GetByAdresse(test),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getClientDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetByCodePostal()
@@ -76,6 +85,10 @@ class MySQLClientDAOTest {
 		array.add(test);
 		this.daos.getClientDAO().create(test);
 		assertEquals(daos.getClientDAO().GetByCode_Postal(test),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getClientDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetByVille()
@@ -85,6 +98,10 @@ class MySQLClientDAOTest {
 		array.add(test);
 		this.daos.getClientDAO().create(test);
 		assertEquals(daos.getClientDAO().GetByVille(test),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getClientDAO().delete(array.get(i));
+		}
 	}
 	@Test
 	void test_GetByPays()
@@ -94,6 +111,10 @@ class MySQLClientDAOTest {
 		array.add(test);
 		this.daos.getClientDAO().create(test);
 		assertEquals(daos.getClientDAO().GetByPays(array.get(0)),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getClientDAO().delete(array.get(i));
+		}
 	}
 	
 	
@@ -135,6 +156,11 @@ class MySQLClientDAOTest {
 		}catch(IllegalArgumentException e) {
 			assertTrue(true);
 		}
+	}
+	
+	@AfterEach
+	public void after() {
+		daos.getClientDAO().delete(test);
 	}
 	
 

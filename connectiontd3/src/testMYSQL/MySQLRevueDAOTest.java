@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import factory.DAOFactory;
@@ -71,6 +71,10 @@ class MySQLRevueDAOTest {
 		this.daos.getRevueDAO().create(test);
 		array.add(test);
 		assertEquals(this.daos.getRevueDAO().GetByPerio(array.get(0)),array);
+		
+		for(int i=0;i<array.size();i++) {
+			daos.getRevueDAO().delete(array.get(i));
+		}
 	}
 	
 
@@ -124,5 +128,9 @@ class MySQLRevueDAOTest {
 		}
 	}
 	
+	@AfterEach
+	public void after() {
+		daos.getRevueDAO().delete(test);
+	}
 
 }
