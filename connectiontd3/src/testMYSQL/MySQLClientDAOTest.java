@@ -161,10 +161,7 @@ class MySQLClientDAOTest {
 		}
 	}
 	
-	/*@AfterEach
-	public void after() {
-		daos.getClientDAO().delete(test);
-	}*/
+
 	
 
 }

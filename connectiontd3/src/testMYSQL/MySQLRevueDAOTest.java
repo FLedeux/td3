@@ -136,9 +136,5 @@ class MySQLRevueDAOTest {
 		}
 	}
 	
-	/*@AfterEach
-	public void after() {
-		daos.getRevueDAO().delete(test);
-	}*/
 
 }
