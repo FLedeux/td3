@@ -28,13 +28,19 @@ public class MySQLRevueDAO implements RevueDAO{
 	public boolean create(Revue revue) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Revue (titre, description, tarif_numero, visuel, id_periodicite) values(?,?,?,?,?)");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Revue (titre, description, tarif_numero, visuel, id_periodicite) values(?,?,?,?,?),Statement.RETURN_GENERATED_KEYS");
 			requete.setString(1, revue.getTitre());
 			requete.setString(2, revue.getDescription());
 			requete.setDouble(3, revue.getTarif_numero());
 			requete.setString(4, revue.getVisuel());
 			requete.setInt(5, revue.getId_perio());
 			int res = requete.executeUpdate();
+			
+			if (res == 1) {
+				ResultSet key = requete.getGeneratedKeys();
+				
+				if(key.next()) revue.setId(key.getInt(1));
+			}
 			
 			if (requete != null)requete.close();
 			
@@ -68,8 +74,7 @@ public class MySQLRevueDAO implements RevueDAO{
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return false;
+				throw (new IllegalArgumentException(sqle.getMessage()));
 				}
 	}
 
@@ -86,8 +91,8 @@ public class MySQLRevueDAO implements RevueDAO{
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return false;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 
@@ -106,8 +111,8 @@ public class MySQLRevueDAO implements RevueDAO{
 			return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return null;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 	
@@ -124,8 +129,8 @@ public class MySQLRevueDAO implements RevueDAO{
 			return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return null;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 

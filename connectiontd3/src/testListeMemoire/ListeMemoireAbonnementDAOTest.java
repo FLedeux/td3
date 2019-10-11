@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import factory.DAOFactory;
 import factory.Persistance;
 import metier.Abonnement;
-import metier.Client;
-import metier.Revue;
+
 
 class ListeMemoireAbonnementDAOTest {
 

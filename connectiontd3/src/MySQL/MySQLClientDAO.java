@@ -36,8 +36,8 @@ private static MySQLClientDAO instance;
 			return new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays"));
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return null;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 
@@ -45,7 +45,7 @@ private static MySQLClientDAO instance;
 	public boolean create(Client client) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Client (nom, prenom, no_rue, voie, code_postal, ville, pays) values(?,?,?,?,?,?,?)");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Client (nom, prenom, no_rue, voie, code_postal, ville, pays) values(?,?,?,?,?,?,?), Statement.RETURN_GENERATED_KEYS");
 			requete.setString(1, client.getNom());
 			requete.setString(2, client.getPrenom());
 			requete.setString(3, client.getNo_rue());
@@ -56,6 +56,11 @@ private static MySQLClientDAO instance;
 
 			int res = requete.executeUpdate();
 			
+			if (res == 1) {
+				ResultSet key = requete.getGeneratedKeys();
+				
+				if(key.next()) client.setId(key.getInt(1));
+			}
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
@@ -91,8 +96,8 @@ private static MySQLClientDAO instance;
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return false;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 
@@ -109,8 +114,8 @@ private static MySQLClientDAO instance;
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return false;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 			}
 	}
 

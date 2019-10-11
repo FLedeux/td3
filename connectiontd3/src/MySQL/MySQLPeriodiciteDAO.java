@@ -35,8 +35,8 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return null;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 
@@ -44,10 +44,15 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 	public boolean create(Periodicite periodicite) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Periodicite (libelle) values(?)");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Periodicite (libelle) values(?),Statement.RETURN_GENERATED_KEYS");
 			requete.setString(1,periodicite.getNom());
 			int res = requete.executeUpdate();
 			
+			if (res == 1) {
+				ResultSet key = requete.getGeneratedKeys();
+				
+				if(key.next()) periodicite.setId(key.getInt(1));
+			}
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
@@ -74,8 +79,8 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-			return false;	
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 			}
 			
 	}
@@ -95,8 +100,8 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			return res==1;
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return false;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 			}
 	}
 
@@ -113,8 +118,8 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
 			}
 			catch (SQLException sqle) {
-				System.out.println("Pb select" + sqle.getMessage());
-				return null;
+				throw (new IllegalArgumentException(sqle.getMessage()));
+
 				}
 	}
 
