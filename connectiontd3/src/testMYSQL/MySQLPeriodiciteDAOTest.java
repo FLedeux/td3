@@ -20,6 +20,7 @@ class MySQLPeriodiciteDAOTest {
 	{
 		test = new Periodicite(0,"test");
 		assertTrue(this.daos.getPeriodiciteDAO().create(test));
+		daos.getPeriodiciteDAO().delete(test);
 	}
 	
 	
@@ -29,6 +30,7 @@ class MySQLPeriodiciteDAOTest {
 		test = new Periodicite(0,"test");
 		this.daos.getPeriodiciteDAO().create(test);
 		assertEquals(this.daos.getPeriodiciteDAO().getById(test.getId()),test);
+		daos.getPeriodiciteDAO().delete(test);
 	}
 	
 	@Test
@@ -37,6 +39,7 @@ class MySQLPeriodiciteDAOTest {
 		test = new Periodicite(0,"banane");
 		this.daos.getPeriodiciteDAO().create(test);
 		assertEquals(this.daos.getPeriodiciteDAO().getByNom(test),test);
+		daos.getPeriodiciteDAO().delete(test);
 	}
 	
 	
@@ -47,6 +50,7 @@ class MySQLPeriodiciteDAOTest {
 		this.daos.getPeriodiciteDAO().create(test);
 		Periodicite test2 = new Periodicite(test.getId(),"test2");
 		assertTrue(this.daos.getPeriodiciteDAO().update(test2));
+		daos.getPeriodiciteDAO().delete(test);
 	}
 	
 	@Test
@@ -112,9 +116,6 @@ class MySQLPeriodiciteDAOTest {
 		}
 	}
 	
-	@AfterEach
-	public void after() {
-		daos.getPeriodiciteDAO().delete(test);
-	}
+
 
 }

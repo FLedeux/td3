@@ -22,7 +22,7 @@ public class Abonnement {
 				
 			
 			this.setDate_debut(LocalDate.parse(date_debut, formatage));
-			this.setDate_fin(LocalDate.parse(date_debut, formatage));
+			this.setDate_fin(LocalDate.parse(date_fin, formatage));
 		}
 		
 		public Abonnement(int id_client,int id_revue,LocalDate date_debut,LocalDate date_fin){

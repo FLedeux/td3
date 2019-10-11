@@ -29,7 +29,7 @@ private static MySQLAbonnementDAO instance;
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
 			
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Abonnement (id_client, id_abonnement, date_abonnement, date_fin) values(?,?,?,?)");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Abonnement (id_client, id_revue, date_debut, date_fin) values(?,?,?,?)");
 			requete.setInt(1, abonnement.getId_client());
 			requete.setInt(2, abonnement.getId_revue());
 			requete.setDate(3, java.sql.Date.valueOf(abonnement.getDate_debut()));
@@ -65,7 +65,7 @@ private static MySQLAbonnementDAO instance;
 			
 			if (laConnexion != null)laConnexion.close();
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			return res==1;		
 			}
@@ -81,7 +81,7 @@ private static MySQLAbonnementDAO instance;
 
 		try {
 		Connection laConnexion = Connexion.creeConnexion();
-		PreparedStatement requete = laConnexion.prepareStatement("delete from Abonnement where id_client=? and id_abonnement=?");
+		PreparedStatement requete = laConnexion.prepareStatement("delete from Abonnement where id_client=? and id_revue=?");
 		requete.setInt(1, abonnement.getId_client());
 		requete.setInt(2, abonnement.getId_revue());
 		int res = requete.executeUpdate();
@@ -89,7 +89,7 @@ private static MySQLAbonnementDAO instance;
 		
 		if (laConnexion != null)laConnexion.close();
 		if(res<1) {
-			throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+			throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 		}
 		return res==1;
 		}
@@ -108,13 +108,14 @@ private static MySQLAbonnementDAO instance;
 			requete.setInt(1,abonnement.getId_client());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Abonnement> Liste = new ArrayList<Abonnement>();
 			
 			while (res.next()) {
 				Liste.add(new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate()));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -132,13 +133,14 @@ private static MySQLAbonnementDAO instance;
 			requete.setInt(1,abonnement.getId_revue());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Abonnement> Liste = new ArrayList<Abonnement>();
 			
 			while (res.next()) {
 				Liste.add(new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate()));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -157,13 +159,18 @@ private static MySQLAbonnementDAO instance;
 			requete.setInt(2, abonnement.getId_revue());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			if(res.next()) {
-			return new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate());
-			}
+				Abonnement abo = new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate());
+
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return abo;			
+				}
 			else {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			}
 			catch (SQLException sqle) {
@@ -183,13 +190,14 @@ private static MySQLAbonnementDAO instance;
 			requete.setDate(1,java.sql.Date.valueOf(abonnement.getDate_debut()));
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Abonnement> Liste = new ArrayList<Abonnement>();
 			
 			while (res.next()) {
 				Liste.add(new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate()));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -207,13 +215,14 @@ private static MySQLAbonnementDAO instance;
 			requete.setDate(1,java.sql.Date.valueOf(abonnement.getDate_fin()));
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Abonnement> Liste = new ArrayList<Abonnement>();
 			
 			while (res.next()) {
 				Liste.add(new Abonnement(res.getInt("id_client"),res.getInt("id_revue"),res.getDate("date_debut").toLocalDate(),res.getDate("date_fin").toLocalDate()));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}

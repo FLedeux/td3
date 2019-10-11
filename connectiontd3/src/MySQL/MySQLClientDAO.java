@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MySQLClientDAO implements ClientDAO{
@@ -27,17 +28,21 @@ private static MySQLClientDAO instance;
 	public Client getById(int id) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("Select * From Revue Where id_revue=?");
+			PreparedStatement requete = laConnexion.prepareStatement("Select * From Client Where id_client=?");
 			requete.setInt(1,id);
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			if(res.next()){
-				return new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays"));
+				Client client = new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays"));
+
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return client;			
 			}
 			else {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 
 		}
@@ -51,7 +56,7 @@ private static MySQLClientDAO instance;
 	public boolean create(Client client) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Client (nom, prenom, no_rue, voie, code_postal, ville, pays) values(?,?,?,?,?,?,?), Statement.RETURN_GENERATED_KEYS");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Client (nom, prenom, no_rue, voie, code_postal, ville, pays) values(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			requete.setString(1, client.getNom());
 			requete.setString(2, client.getPrenom());
 			requete.setString(3, client.getNo_rue());
@@ -83,7 +88,7 @@ private static MySQLClientDAO instance;
 	public boolean update(Client client) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("update Revue set nom=?,prenom=?,no_rue=?, voie=?,code_postal=?,ville=?,pays=?  where id_client=?");
+			PreparedStatement requete = laConnexion.prepareStatement("update Client set nom=?,prenom=?,no_rue=?, voie=?,code_postal=?,ville=?,pays=?  where id_client=?");
 			requete.setString(1, client.getNom());
 			requete.setString(2, client.getPrenom());
 			requete.setString(3, client.getNo_rue());
@@ -99,7 +104,7 @@ private static MySQLClientDAO instance;
 			
 			if (laConnexion != null)laConnexion.close();
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			return res==1;
 			}
@@ -120,7 +125,7 @@ private static MySQLClientDAO instance;
 			
 			if (laConnexion != null)laConnexion.close();
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			return res==1;
 			}
@@ -139,13 +144,14 @@ private static MySQLClientDAO instance;
 			requete.setString(2, client.getPrenom());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Client> Liste = new ArrayList<Client>();
 			
 			while (res.next()) {
 				Liste.add(new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -164,13 +170,13 @@ private static MySQLClientDAO instance;
 			requete.setString(2, client.getVoie());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			ArrayList<Client> Liste = new ArrayList<Client>();
 			
 			while (res.next()) {
 				Liste.add(new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -188,13 +194,13 @@ private static MySQLClientDAO instance;
 			requete.setString(1,client.getCode_postal());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			ArrayList<Client> Liste = new ArrayList<Client>();
 			
 			while (res.next()) {
 				Liste.add(new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -212,13 +218,14 @@ private static MySQLClientDAO instance;
 			requete.setString(1,client.getVille());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Client> Liste = new ArrayList<Client>();
 			
 			while (res.next()) {
 				Liste.add(new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
@@ -236,13 +243,13 @@ private static MySQLClientDAO instance;
 			requete.setString(1,client.getPays());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			ArrayList<Client> Liste = new ArrayList<Client>();
 			
 			while (res.next()) {
 				Liste.add(new Client(res.getInt("id_client"),res.getString("nom"),res.getString("prenom"),res.getString("no_rue"),res.getString("voie"),res.getString("code_postal"),res.getString("ville"),res.getString("pays")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}

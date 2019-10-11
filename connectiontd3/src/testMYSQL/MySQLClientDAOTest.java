@@ -22,6 +22,7 @@ class MySQLClientDAOTest {
 	{
 		test = new Client(0,"Jean","Test","53","rue du test","57070","Testville","Testland");
 		assertTrue(this.daos.getClientDAO().create(test));
+		daos.getClientDAO().delete(test);
 	}
 	
 	@Test
@@ -30,6 +31,7 @@ class MySQLClientDAOTest {
 		test = new Client(0,"Jean","Test","53","rue du test","57070","Testville","Testland");
 		this.daos.getClientDAO().create(test);
 		assertEquals(this.daos.getClientDAO().getById(test.getId()),test);
+		daos.getClientDAO().delete(test);
 	}
 
 	@Test
@@ -39,6 +41,7 @@ class MySQLClientDAOTest {
 		this.daos.getClientDAO().create(test);
 		Client test2 = new Client(test.getId(),"Jack","Test","53","rue du test","57070","Testville","Testland");
 		assertTrue(this.daos.getClientDAO().update(test2));
+		daos.getClientDAO().delete(test);
 	}
 	
 	@Test
@@ -158,10 +161,10 @@ class MySQLClientDAOTest {
 		}
 	}
 	
-	@AfterEach
+	/*@AfterEach
 	public void after() {
 		daos.getClientDAO().delete(test);
-	}
+	}*/
 	
 
 }

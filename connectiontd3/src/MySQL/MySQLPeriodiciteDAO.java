@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import dao.PeriodiciteDAO;
 import metier.Periodicite;
@@ -30,13 +31,16 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			requete.setInt(1,id);
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			if(res.next()) {
-			return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
+				Periodicite periodicite = new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return periodicite;
 			}
 			else {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 		}
 			catch (SQLException sqle) {
@@ -50,7 +54,7 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 	public boolean create(Periodicite periodicite) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Periodicite (libelle) values(?),Statement.RETURN_GENERATED_KEYS");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Periodicite (libelle) values(?)",Statement.RETURN_GENERATED_KEYS);
 			requete.setString(1,periodicite.getNom());
 			int res = requete.executeUpdate();
 			
@@ -83,7 +87,7 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			
 			if (laConnexion != null)laConnexion.close();
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			
 			return res==1;
@@ -108,7 +112,7 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			if (laConnexion != null)laConnexion.close();
 			
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			return res==1;
 			}
@@ -126,13 +130,16 @@ public class MySQLPeriodiciteDAO implements PeriodiciteDAO{
 			requete.setString(1,periodicite.getNom());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			if(res.next()) {
-				return new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
+				Periodicite Pperiodicite = new Periodicite(res.getInt("id_periodicite"),res.getString("libelle"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return Pperiodicite;
 				}
 				else {
-					throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+					if (requete != null)requete.close();
+					if (laConnexion != null)laConnexion.close();
+					throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 				}			}
 			catch (SQLException sqle) {
 				System.out.println("Pb select" + sqle.getMessage());

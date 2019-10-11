@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import dao.RevueDAO;
@@ -28,7 +29,7 @@ public class MySQLRevueDAO implements RevueDAO{
 	public boolean create(Revue revue) {
 		try {
 			Connection laConnexion = Connexion.creeConnexion();
-			PreparedStatement requete = laConnexion.prepareStatement("insert into Revue (titre, description, tarif_numero, visuel, id_periodicite) values(?,?,?,?,?),Statement.RETURN_GENERATED_KEYS");
+			PreparedStatement requete = laConnexion.prepareStatement("insert into Revue (titre, description, tarif_numero, visuel, id_periodicite) values(?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			requete.setString(1, revue.getTitre());
 			requete.setString(2, revue.getDescription());
 			requete.setDouble(3, revue.getTarif_numero());
@@ -45,9 +46,11 @@ public class MySQLRevueDAO implements RevueDAO{
 			if (requete != null)requete.close();
 			
 			if (laConnexion != null)laConnexion.close();
+			
 			return res==1;
 			}
 			catch (SQLException sqle) {
+				System.out.println("tt");
 				System.out.println("Pb select" + sqle.getMessage());
 			return false;	
 			}
@@ -72,7 +75,7 @@ public class MySQLRevueDAO implements RevueDAO{
 			if (laConnexion != null)laConnexion.close();
 			
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			
 			return res==1;
@@ -97,7 +100,7 @@ public class MySQLRevueDAO implements RevueDAO{
 			if (laConnexion != null)laConnexion.close();
 			
 			if(res<1) {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 			
 			return res==1;
@@ -118,15 +121,19 @@ public class MySQLRevueDAO implements RevueDAO{
 			PreparedStatement requete = laConnexion.prepareStatement("Select * From Revue Where id_revue=?");
 			requete.setInt(1,id);
 			ResultSet res = requete.executeQuery();
-			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			
 			if(res.next()) {
-			return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
+				Revue revue = new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite")); 
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return revue;
+
 			}
 			else {
-				throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
 			}
 		}
 			catch (SQLException sqle) {
@@ -142,15 +149,17 @@ public class MySQLRevueDAO implements RevueDAO{
 			PreparedStatement requete = laConnexion.prepareStatement("Select * From Revue Where titre=?");
 			requete.setString(1,revue.getTitre());
 			ResultSet res = requete.executeQuery();
-			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
 			if(res.next()) {
-				return new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite"));
+				Revue Rrevue = new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite")); 
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				return Rrevue;
 				}
-				else {
-					throw (new IllegalArgumentException("Aucun objet ne possède cet identifiant"));
-				}			}
+			else {
+				if (requete != null)requete.close();
+				if (laConnexion != null)laConnexion.close();
+				throw (new IllegalArgumentException("Aucun objet ne possï¿½de cet identifiant"));
+			}			}
 			catch (SQLException sqle) {
 				System.out.println("Pb select" + sqle.getMessage());
 				return null;
@@ -168,13 +177,14 @@ public class MySQLRevueDAO implements RevueDAO{
 			requete.setInt(1,revue.getId_perio());
 			ResultSet res = requete.executeQuery();
 			
-			if (requete != null)requete.close();
-			if (laConnexion != null)laConnexion.close();
+
 			ArrayList<Revue> Liste = new ArrayList<Revue>();
 			
 			while (res.next()) {
 				Liste.add(new Revue(res.getInt("id_revue"),res.getString("titre"),res.getString("description"),res.getDouble("tarif_numero"),res.getString("visuel"),res.getInt("id_periodicite")));
 				}
+			if (requete != null)requete.close();
+			if (laConnexion != null)laConnexion.close();
 			return Liste;
 			
 			}
